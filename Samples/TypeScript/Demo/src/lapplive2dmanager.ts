@@ -18,7 +18,7 @@ import { canvas } from './lappdelegate';
 import * as LAppDefine from './lappdefine';
 
 export let s_instance: LAppLive2DManager = null; //实例化，调用lappmodel.ts的表情、动作方法，参数由LAppDefine.js传输
-let teaching_state :boolean = false;
+let teaching_state :boolean = true;
 /**
  * サンプルアプリケーションにおいてCubismModelを管理するクラス
  * モデル生成と破棄、タップイベントの処理、モデル切り替えを行う。
@@ -103,7 +103,7 @@ export class LAppLive2DManager {
         `[APP]tap point: {x: ${x.toFixed(2)} y: ${y.toFixed(2)}}` //点击任意点
       );
     }
-
+    this.onTeaching();
     for (let i = 0; i < this._models.getSize(); i++) {
       if (this._models.at(i).hitTest(LAppDefine.HitAreaNameHead, x, y)) { //点击头部
         if (LAppDefine.DebugLogEnable) {
@@ -134,6 +134,14 @@ export class LAppLive2DManager {
   public onTeaching() : void{
     if (teaching_state){
       console.log("当前处于教学动作");
+      for (let i = 0; i < this._models.getSize(); i++) {
+        //动作 mp3 表情
+        //this._models.at(i).startMotion(LAppDefine.MotionGroupTeaching,2,2,this._finishedMotion);
+        this._models.at(i).startMotion(LAppDefine.MotionGroupTeaching,4,2,this._finishedMotion);
+        this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,1);
+        this._models.at(i).setExpressionBySize(6);
+        //对动作的调用方法增加一个判断当前是否有动作才能继续执行
+      }
     }else{
       console.log("当前不是教学动作");
     }
@@ -181,7 +189,7 @@ export class LAppLive2DManager {
   public changeScene(index: number): void {
     this._sceneIndex = index;
     if (LAppDefine.DebugLogEnable) {
-      LAppPal.printMessage(`[APP]model index: ${this._sceneIndex}`);
+      LAppPal.printMessage(`[APP]model name: ${this._sceneIndex+LAppDefine.ModelDir[index]}`);
     }
 
     // ModelDir[]に保持したディレクトリ名から

@@ -13,8 +13,7 @@ export namespace Live2DCubismFramework {
   const Epsilon = 0.01;
 
   /**
-   * 顔の向きの制御機能
-   *
+   * 顔の向きの制御機能 脸部朝向的控制功能
    * 顔の向きの制御機能を提供するクラス。
    */
   export class CubismTargetPoint {

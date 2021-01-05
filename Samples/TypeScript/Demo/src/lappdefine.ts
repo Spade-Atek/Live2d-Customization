@@ -69,6 +69,7 @@ win.initDefine = function(resourcesPath: string, modelDir: string[]){
     ResourcesPath = resourcesPath;
     ModelDir = modelDir;
     ModelDirSize = modelDir.length;
+    console.log("创建中");
 }
 
 //建立一个暴露出口进行传值

@@ -7,7 +7,6 @@
   <style>
     html, body {
         margin: 0;
-        background-color: #22d7dd;
     }
 
   </style>
@@ -30,7 +29,7 @@
     <div class="live2d-main">
         <div class="live2d-tips"></div>
         <!-- 这里可以定义画布的大小位置 -->
-        <canvas id="live2dCanvas" width="1000" height="1000" class="live2dCanvas"></canvas>
+        <canvas id="live2dCanvas" width="800" height="800" style="position: fixed; left: -300px; bottom:-100px" class="live2dCanvas"></canvas>
         <div class="tool">
             <span class="fui-home"></span>
             <span class="fui-chat"></span>
@@ -46,9 +45,7 @@
 <script type="text/javascript">
   var resourcesPath = './live2d/model/';  // 指定资源文件（模型）保存的路径
   var modelDir = 'Haru,Hiyori,Mark,Natori,Rice,zwt';  // 指定需要加载的模型
-  init();  // 初始化模型，属于message.js文件
-</script>
-<script type="text/javascript">
+  init();
   const socket = io('http://127.0.0.1:5000/change');
   
   //接受指令，如果正确，发送到change_state
@@ -58,7 +55,7 @@
       if(x.value == "teach" ) socket.emit("change_state","teach")
       if(x.value == "study" ) socket.emit("change_state","study")
   }
-  
+
   //返回服务端的state指令（广播）
   socket.on('changeState',function(res){
     console.log("服务端发送的消息是"+res)

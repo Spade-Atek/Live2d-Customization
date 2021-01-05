@@ -589,7 +589,7 @@ export class LAppModel extends CubismUserModel {
         });
     } else {
       motion.setFinishedMotionHandler(onFinishedMotionHandler);
-      this.startSound(group, no); //播放音频
+      console.log("动作group: "+group+ ", group number: "+this._modelSetting.getMotionCount(group)+", 当前为:"+no)
     }
 
     if (this._debugMode) {
