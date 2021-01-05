@@ -12,8 +12,8 @@
 
   </style>
   <script type="text/javascript" src="./live2d/js/jquery.js"></script>
-  <!-- Pollyfill script -->
-  <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+  <!-- Pollyfill script <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>-->
+  <script src="./live2d/js/minified.js"></script>
   <!-- Live2DCubismCore script -->
   <script src="../../../Core/live2dcubismcore.js"></script>
   <!-- Build script -->
@@ -24,6 +24,8 @@
 </head>
 <body>
     1234567890
+    <input id="getAction">
+    <button onclick="getActionBtn()">获取</button>
     <div class="live2d-main">
         <div class="live2d-tips"></div>
         <!-- 这里可以定义画布的大小位置 -->
@@ -37,6 +39,7 @@
             <span class="fui-info-circle"></span>
             <span class="fui-cross"></span>
         </div>
+        
     </div>
 </body>
 <script src="./live2d/js/message.js"></script>
@@ -45,16 +48,26 @@
   var backImageName = ''; // 指定背景图片
   var modelDir = 'Haru,Hiyori,Mark,Natori,Rice,zwt';  // 指定需要加载的模型
   init();  // 初始化模型，属于message.js文件
-  
+</script>
+<script type="text/javascript">
   const socket = io('http://127.0.0.1:5000/change');
-  socket.on('connection',function(now){
-    socket.emit('now',"1");
-    console.log(now);
-  });
-  socket.on('changeState', function (data) {
-    console.log(data);
-    changeState(data);
-  });
+  
+  //接受指令，如果正确，发送到change_state
+  function getActionBtn(){
+      var x = document.getElementById("getAction")
+      if(x.value == "wait" ) socket.emit("change_state","wait")
+      if(x.value == "teach" ) socket.emit("change_state","teach")
+      if(x.value == "study" ) socket.emit("change_state","study")
+  }
+  
+  //返回服务端的state指令（广播）
+  socket.on('changeState',function(res){
+    console.log("服务端发送的消息是"+res)
+    changeState(res)
+  }); 
 
+  socket.on('connect',function(){
+    socket.emit('connect_send',{ message :'I am connected!'});
+  })
 </script>
 </html>

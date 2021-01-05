@@ -1,10 +1,10 @@
 // 初始化
 var state = 0;// 0 1 2
 function changeState(action){
-  if (action = "wait") state = 0;
-  if (action = "teach") state = 1; 
-  if (action = "study") state = 2
-  console.log(state);
+  if (action == "wait") state = 0;
+  if (action == "teach") state = 1; 
+  if (action == "study") state = 2
+  console.log('当前状态'+state+":"+action);
 }
 
 function init(){	

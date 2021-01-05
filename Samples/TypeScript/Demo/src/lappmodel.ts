@@ -658,9 +658,10 @@ export class LAppModel extends CubismUserModel {
       return;
     }
 
-    const no: number = Math.floor(Math.random() * this._expressions.getSize());
+    const no: number = Math.floor(Math.random() * this._expressions.getSize()); //生成随机整数 1-8之间的整数
+    console.log("表情个数："+this._expressions.getSize()+",当前为"+no) //结果为8 
 
-    for (let i = 0; i < this._expressions.getSize(); i++) {
+    for (let i = 0; i < this._expressions.getSize(); i++) {    
       if (i == no) {
         const name: string = this._expressions._keyValues[i].first;
         this.setExpression(name);

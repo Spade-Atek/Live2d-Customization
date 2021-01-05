@@ -29,10 +29,10 @@ export class LAppView {
     this._back = null;
     this._gear = null;
 
-    // タッチ関係のイベント管理
+    // タッチ関係のイベント管理 触摸相关的事件管理
     this._touchManager = new TouchManager();
 
-    // デバイス座標からスクリーン座標に変換するための
+    // デバイス座標からスクリーン座標に変換するための 从设备坐标到屏幕坐标的转换
     this._deviceToScreen = new Csm_CubismMatrix44();
 
     // 画面の表示の拡大縮小や移動の変換を行う行列
