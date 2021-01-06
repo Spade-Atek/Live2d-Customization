@@ -348,9 +348,9 @@ export class LAppModel extends CubismUserModel {
       this._model.saveParameters();
       this._allMotionCount = 0;
       this._motionCount = 0;
-      const group: string[] = [];
+      const group: string[] = []; //动作组别
 
-      const motionGroupCount: number = this._modelSetting.getMotionGroupCount();
+      const motionGroupCount: number = this._modelSetting.getMotionGroupCount(); //获取数量
 
       // モーションの総数を求める
       for (let i = 0; i < motionGroupCount; i++) {
@@ -457,12 +457,12 @@ export class LAppModel extends CubismUserModel {
     let motionUpdated = false;
 
     //--------------------------------------------------------------------------
-    this._model.loadParameters(); // 前回セーブされた状態をロード
+    this._model.loadParameters(); // 前回セーブされた状態をロード 加载上次保存的状态 加载Idle动作
     if (this._motionManager.isFinished()) {
-      // モーションの再生がない場合、待機モーションの中からランダムで再生する
+      // モーションの再生がない場合、待機モーションの中からランダムで再生する 在没有运动的再生的情况下，从待机运动中随机再生
       this.startRandomMotion(
-        LAppDefine.MotionGroupIdle,
-        LAppDefine.PriorityIdle
+        LAppDefine.MotionGroupIdle, // Idle
+        LAppDefine.PriorityIdle     // 1
       );
     } else {
       motionUpdated = this._motionManager.updateMotion(
@@ -621,7 +621,11 @@ export class LAppModel extends CubismUserModel {
     const no: number = Math.floor(
       Math.random() * this._modelSetting.getMotionCount(group)
     );
-
+    //信息是根据model3.json文件读取的
+    console.log("动作group: "+group+ ", group number: "+this._modelSetting.getMotionCount(group)+", 当前为:"+no)
+    //console.log("动作no："+no);  // 4 2
+    //console.log("动作group："+group); // TapBody Idle
+    //console.log("动作回调："+onFinishedMotionHandler);
     return this.startMotion(group, no, priority, onFinishedMotionHandler);
   }
 
@@ -632,7 +636,6 @@ export class LAppModel extends CubismUserModel {
    */
   public setExpression(expressionId: string): void {
     const motion: ACubismMotion = this._expressions.getValue(expressionId);
-
     if (this._debugMode) {
       LAppPal.printMessage(`[APP]expression: [${expressionId}]`);
     }
@@ -657,16 +660,34 @@ export class LAppModel extends CubismUserModel {
     if (this._expressions.getSize() == 0) {
       return;
     }
+    const no: number = Math.floor(Math.random() * this._expressions.getSize());
 
-    const no: number = Math.floor(Math.random() * this._expressions.getSize()); //生成随机整数 1-8之间的整数
-    console.log("表情个数："+this._expressions.getSize()+",当前为"+no) //结果为8 
-
-    for (let i = 0; i < this._expressions.getSize(); i++) {    
+    for (let i = 0; i < this._expressions.getSize(); i++) {
       if (i == no) {
         const name: string = this._expressions._keyValues[i].first;
-        this.setExpression(name);
+        this.setExpression(name); //本质是通过调用setExpression进行执行
         return;
       }
+    }
+  }
+
+  /**
+   * 通过第几个设定指定的表情动作
+   */
+  public setExpressionBySize(id : number): void{
+    if(this._expressions.getSize()==0){
+      return;
+    };
+    if(id < 0 || id > this._expressions.getSize()){
+      console.log("输入范围有误");
+      return;
+    }
+    for(let i = 0 ; i<this._expressions.getSize(); i++){
+      if(i == id){
+        const name: string = this._expressions._keyValues[i].first;
+        console.log(name);  //fO6
+        this.setExpression(name);
+      }  
     }
   }
 
@@ -855,7 +876,7 @@ export class LAppModel extends CubismUserModel {
     this._allMotionCount = 0;
   }
 
-  _modelSetting: ICubismModelSetting; // モデルセッティング情報
+  _modelSetting: ICubismModelSetting; // モデルセッティング情報 模型设置信息
   _modelHomeDir: string; // モデルセッティングが置かれたディレクトリ
   _userTimeSeconds: number; // デルタ時間の積算値[秒]
 

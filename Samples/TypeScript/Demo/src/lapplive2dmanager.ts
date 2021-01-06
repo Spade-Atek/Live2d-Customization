@@ -16,6 +16,7 @@ import { LAppModel } from './lappmodel';
 import { LAppPal } from './lapppal';
 import { canvas } from './lappdelegate';
 import * as LAppDefine from './lappdefine';
+
 export let s_instance: LAppLive2DManager = null; //实例化，调用lappmodel.ts的表情、动作方法，参数由LAppDefine.js传输
 let teaching_state :boolean = false;
 /**
@@ -110,15 +111,18 @@ export class LAppLive2DManager {
             `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
           );
         }
-        //this.onTeaching();
-        this._models.at(i).setRandomExpression(); 
+        //this._models.at(i).setRandomExpression(); 
+        //this._models.at(i).setExpressionBySize(6);
+        this._models.at(i).setExpression('f06');
+        this.onTeaching();
       } else if (this._models.at(i).hitTest(LAppDefine.HitAreaNameBody, x, y)) { //点击身体
         if (LAppDefine.DebugLogEnable) {
           LAppPal.printMessage(
             `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
           );
         }
-        this._models.at(i).startRandomMotion(LAppDefine.MotionGroupTapBody,LAppDefine.PriorityNormal,this._finishedMotion);
+        //this._models.at(i).startRandomMotion(LAppDefine.MotionGroupTapBody,LAppDefine.PriorityNormal,this._finishedMotion);
+        this._models.at(i).startRandomMotion(LAppDefine.MotionGroupTeaching,2,this._finishedMotion);
       }
     }
   }
@@ -132,14 +136,6 @@ export class LAppLive2DManager {
       console.log("当前处于教学动作");
     }else{
       console.log("当前不是教学动作");
-      for (let i = 0; i < this._models.getSize(); i++) {
-        console.log("执行");
-        this._models.at(i).setExpression("6");
-        for (let i = 0; i < 8; i++) {    
-          //const name: string = this._expressions._keyValues[6].first;
-          //this._models.at(i).setExpression(name);
-          return;
-      }
     }
   }
 

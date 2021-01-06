@@ -43,6 +43,7 @@ export let ModelDirSize: number = ModelDir.length;
 // 外部定義ファイル（json）と合わせる
 export const MotionGroupIdle = 'Idle'; // アイドリング
 export const MotionGroupTapBody = 'TapBody'; // 体をタップしたとき
+export const MotionGroupTeaching = 'Teaching';
 
 // 外部定義ファイル（json）と合わせる
 export const HitAreaNameHead = 'Head';
