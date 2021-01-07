@@ -31,11 +31,11 @@
 			  {"File":"motions/haru_g_m07.motion3.json" ,"FadeInTime":0.5, "FadeOutTime":0.5}
 			],
 			"Teaching": [
-				{"File":"motions/haru_g_m25.motion3.json" ,"sound":"sounds/flickHead_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
-				{"File":"motions/haru_g_m10.motion3.json" ,"sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
-				{"File":"motions/haru_g_m14.motion3.json" ,"sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
-				{"File":"motions/haru_g_m02.motion3.json" ,"sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
-				{"File":"motions/haru_g_m01.motion3.json" ,"sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5}
+				{"File":"motions/haru_g_m25.motion3.json" ,"Sound":"sounds/flickHead_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
+				{"File":"motions/haru_g_m10.motion3.json" ,"Sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
+				{"File":"motions/haru_g_m14.motion3.json" ,"Sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
+				{"File":"motions/haru_g_m02.motion3.json" ,"Sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5},
+				{"File":"motions/haru_g_m01.motion3.json" ,"Sound":"sounds/shake_00.mp3","FadeInTime":0.5, "FadeOutTime":0.5}
 			  ]
 		},
 		"UserData": "Haru.userdata3.json"

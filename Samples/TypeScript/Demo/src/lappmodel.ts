@@ -555,7 +555,6 @@ export class LAppModel extends CubismUserModel {
     }
 
     const motionFileName = this._modelSetting.getMotionFileName(group, no);
-
     // ex) idle_0
     const name = `${group}_${no}`;
     let motion: CubismMotion = this._motions.getValue(name) as CubismMotion;
@@ -584,12 +583,13 @@ export class LAppModel extends CubismUserModel {
           if (fadeTime >= 0.0) {
             motion.setFadeOutTime(fadeTime);
           }
-
+          
           motion.setEffectIds(this._eyeBlinkIds, this._lipSyncIds);
           autoDelete = true; // 終了時にメモリから削除
         });
     } else {
       motion.setFinishedMotionHandler(onFinishedMotionHandler);
+      this.startSound(group, no); //播放音频
     }
 
     if (this._debugMode) {
@@ -627,6 +627,27 @@ export class LAppModel extends CubismUserModel {
     //console.log("动作group："+group); // TapBody Idle
     //console.log("动作回调："+onFinishedMotionHandler);
     return this.startMotion(group, no, priority, onFinishedMotionHandler);
+  }
+
+ /**
+   * 播放音频，用于内部动作调用和外部动作调用
+   * @param group モーショングループ名 名称
+   * @param no グループ内の番号 组内号码
+   * @return 開始したモーションの識別番号を返す。個別のモーションが終了したか否かを判定するisFinished()の引数で使用する。開始できない時は[-1] 返回开始的运动的识别号码。在isFinished()参数中使用，isFinished()用于确定个别动作是否结束。不能开始的时候[-1]
+   */
+  public startSound(
+    group: string,
+    no: number,
+  ): void{
+    const motionSoundName = this._modelSetting.getMotionSoundFileName(group, no);
+      if(motionSoundName != ""){
+        //var snd = document.createElement("audio");
+        let snd = new Audio()
+        snd.src = this._modelHomeDir + motionSoundName
+        snd.play();
+        console.log("Start sound:"+snd.src);
+        //注意播放视频的时间
+      }
   }
 
   /**
