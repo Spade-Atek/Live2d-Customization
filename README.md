@@ -1,8 +1,8 @@
 # Cubism Web Samples
 
-Live2D Cubism 4 Editor で出力したモデルを表示するアプリケーションのサンプル実装です。
+显示用Live2D Cubism 4 Editor输出的模型的应用的样本实现。
 
-Cubism Web Framework および Live2D Cubism Core と組み合わせて使用します。
+与Cubism Web Framework和Live2D Cubism Core结合使用。
 
 
 ## ライセンス

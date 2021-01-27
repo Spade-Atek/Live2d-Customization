@@ -649,6 +649,7 @@ export class LAppModel extends CubismUserModel {
         //注意播放视频的时间
       }
   }
+  
 
   /**
    * 引数で指定した表情モーションをセットする 设置用参数指定的表情动作
@@ -835,14 +836,14 @@ export class LAppModel extends CubismUserModel {
   }
 
   /**
-   * モデルを描画する処理。モデルを描画する空間のView-Projection行列を渡す。
+   * モデルを描画する処理。モデルを描画する空間のView-Projection行列を渡す。绘制模型的处理。传递描绘模型的空间的View-Projection矩阵。
    */
   public draw(matrix: CubismMatrix44): void {
     if (this._model == null) {
       return;
     }
 
-    // 各読み込み終了後
+    // 各読み込み終了後 每次读取结束后
     if (this._state == LoadStep.CompleteSetup) {
       matrix.multiplyByMatrix(this._modelMatrix);
 

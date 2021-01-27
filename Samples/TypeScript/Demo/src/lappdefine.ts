@@ -25,14 +25,11 @@ export const ViewLogicalMaxTop = 2.0;
 // 相対パス const 声明为let
 export let ResourcesPath = '../../Resources/';
 
-// モデルの後ろにある背景の画像ファイル
-export let BackImageName = 'back_class_normal.png';
-
 // 歯車
-export const GearImageName = 'icon_gear.png';
+//export const GearImageName = 'icon_gear.png';
 
 // 終了ボタン
-export const PowerImageName = 'CloseNormal.png';
+//export const PowerImageName = 'CloseNormal.png';
 
 // モデル定義---------------------------------------------
 // モデルを配置したディレクトリ名の配列
@@ -68,9 +65,15 @@ export const RenderTargetHeight = 1000;
 
 export const win: any = window
 
-win.initDefine = function(resourcesPath: string,backImageName:string, modelDir: string[]){
+win.initDefine = function(resourcesPath: string, modelDir: string[]){
     ResourcesPath = resourcesPath;
-    BackImageName = backImageName;
     ModelDir = modelDir;
     ModelDirSize = modelDir.length;
+}
+
+//建立一个暴露出口进行传值
+win.onTeaching = function(state: number){
+    var getState = 1;
+    getState = state;
+    console.log(getState);
 }

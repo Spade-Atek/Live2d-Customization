@@ -8,11 +8,10 @@ function changeState(action){
 }
 
 function init(){	
-    var resourcesPaths = `${resourcesPath}`;
-    var backImageNames = `${backImageName}`;
+    var resourcesPaths = `${resourcesPath}`;;
     var modelDirString = `${modelDir}`;
     var modelDirs = modelDirString.split(',');
-    initDefine(resourcesPaths, backImageNames, modelDirs);  // lappdefine.ts开放的接口用于初始化常量被编译到bundle.js文件里
+    initDefine(resourcesPaths, modelDirs);  // lappdefine.ts开放的接口用于初始化常量被编译到bundle.js文件里
 }
 
 // 监听复制（这里简单添加了一些事件，可以添加更多的事件，比如报时等）
@@ -63,4 +62,9 @@ function hideMessage(timeout){
     if (timeout === undefined) timeout = 5000;
     window.setTimeout(function() {sessionStorage.removeItem('waifu-text')}, timeout);
     $('.live2d-tips').delay(timeout).fadeTo(200, 0);
+}
+
+if(state == 0){
+    onTeaching(state);
+    console.log("执行");
 }

@@ -10,7 +10,7 @@ import CubismVector2 = cubismvector2.CubismVector2;
 
 export namespace Live2DCubismFramework {
   /**
-   * 数値計算などに使用するユーティリティクラス
+   * 数値計算などに使用するユーティリティクラス 用于数值计算等的实用程序类
    */
   export class CubismMath {
     /**

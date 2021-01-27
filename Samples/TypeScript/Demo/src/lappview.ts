@@ -121,9 +121,10 @@ export class LAppView {
     let imageName = '';
 
     // 背景画像初期化
-    imageName = LAppDefine.BackImageName;
+    //imageName = LAppDefine.BackImageName;
 
     // 非同期なのでコールバック関数を作成
+    /** 
     const initBackGroundTexture = (textureInfo: TextureInfo): void => {
       const x: number = width * 0.5;
       const y: number = height * 0.5;
@@ -138,8 +139,10 @@ export class LAppView {
       false,
       initBackGroundTexture
     );
+    */
 
     // 歯車画像初期化 （切换模型）
+    /** 
      imageName = LAppDefine.GearImageName;
     // 齿轮初始化后的回掉函数
      const initGearTexture = (textureInfo: TextureInfo): void => {
@@ -156,7 +159,7 @@ export class LAppView {
      false,
      initGearTexture
     );
-
+    */
 
     // シェーダーを作成
     if (this._programId == null) {
@@ -217,10 +220,12 @@ export class LAppView {
       }
       live2DManager.onTap(x, y);
       // 歯車にタップしたか
+      /** 
       console.log(this._gear.isHit(pointX, pointY));
       if (this._gear.isHit(pointX, pointY)) {
         live2DManager.nextScene();
       }
+      */
     }
   }
 
