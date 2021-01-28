@@ -45,7 +45,7 @@ export namespace Live2DCubismFramework {
     }
 
     /**
-     * 縦幅を設定
+     * 縦幅を設定 纵向放大缩小倍率
      * @param h 縦幅
      */
     public setHeight(h: number): void {
@@ -55,7 +55,7 @@ export namespace Live2DCubismFramework {
     }
 
     /**
-     * 位置を設定
+     * 位置を設定 设定位置
      *
      * @param x X軸の位置
      * @param y Y軸の位置
@@ -65,7 +65,7 @@ export namespace Live2DCubismFramework {
     }
 
     /**
-     * 中心位置を設定
+     * 中心位置を設定 
      *
      * @param x X軸の中心位置
      * @param y Y軸の中心位置
@@ -158,7 +158,7 @@ export namespace Live2DCubismFramework {
     }
 
     /**
-     * レイアウト情報から位置を設定
+     * レイアウト情報から位置を設定 根据布局信息设定位置
      *
      * @param layout レイアウト情報
      */

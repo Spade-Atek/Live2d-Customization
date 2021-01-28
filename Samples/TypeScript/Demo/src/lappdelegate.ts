@@ -60,11 +60,11 @@ export class LAppDelegate {
     //原来是用js动态在网页上创建画布，画布的长宽在lappdefine.ts指定，
     //现在直接在html中已经有了画布直接拿过来使用就行
     canvas = <HTMLCanvasElement>document.getElementById("live2dCanvas");
-    //canvas.width = canvas.width;
-    //canvas.height = canvas.height;
-    canvas.width = LAppDefine.RenderTargetWidth;
-    canvas.height = LAppDefine.RenderTargetHeight;
-    canvas.toDataURL("image/Buttonpng"); //canvas.toDataURL(type, encoderOptions);返回一个包含图片展示的dataURI
+    canvas.width = canvas.width;
+    canvas.height = canvas.height;
+    //canvas.width = LAppDefine.RenderTargetWidth;
+    //canvas.height = LAppDefine.RenderTargetHeight;
+    canvas.toDataURL("image/png"); //canvas.toDataURL(type, encoderOptions);返回一个包含图片展示的dataURI
 
     fui_eye = <HTMLButtonElement>document.getElementsByClassName("fui-eye")[0]
 
