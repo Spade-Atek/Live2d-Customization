@@ -184,6 +184,7 @@ export namespace Live2DCubismFramework {
     public abstract getEyeBlinkParameterId(index: number): CubismIdHandle;
 
     /**
+     * mouth open
      * リップシンクに関連付けられたパラメータの数を取得する
      * @return リップシンクに関連付けられたパラメータの数
      */
@@ -195,5 +196,6 @@ export namespace Live2DCubismFramework {
      * @return パラメータID
      */
     public abstract getLipSyncParameterId(index: number): CubismIdHandle;
+
   }
 }

@@ -1,8 +1,7 @@
-/**
- * Copyright(c) Live2D Inc. All rights reserved.
- *
- * Use of this source code is governed by the Live2D Open Software license
- * that can be found at https://www.live2d.com/eula/live2d-open-software-license-agreement_en.html.
+/*
+ * @Author: XIE Yutai
+ * @LastEditors: XIE Yutai
+ * @Date: 2021-02-02 15:01:44
  */
 
 import { Live2DCubismFramework as csmvector } from '../type/csmvector';
@@ -20,7 +19,7 @@ export namespace Live2DCubismFramework {
    *
    * 自動まばたき機能を提供する。 眼睛眨眼
    */
-  export class CubismEyeBlink {
+  export class CubismLipSync {
     /**
      * インスタンスを作成する
      * @param modelSetting モデルの設定情報
@@ -29,17 +28,17 @@ export namespace Live2DCubismFramework {
      */
     public static create(
       modelSetting: ICubismModelSetting = null
-    ): CubismEyeBlink {
-      return new CubismEyeBlink(modelSetting);
+    ): CubismLipSync {
+      return new CubismLipSync(modelSetting);
     }
 
     /**
      * インスタンスの破棄
      * @param eyeBlink 対象のCubismEyeBlink
      */
-    public static delete(eyeBlink: CubismEyeBlink): void {
-      if (eyeBlink != null) {
-        eyeBlink = null;
+    public static delete(lipSync: CubismLipSync): void {
+      if (lipSync != null) {
+        lipSync = null;
       }
     }
 
@@ -156,7 +155,7 @@ export namespace Live2DCubismFramework {
           break;
       }
 
-      if (!CubismEyeBlink.CloseIfZero) {
+      if (!CubismLipSync.CloseIfZero) {
         parameterValue = -parameterValue;
       }
 
@@ -184,8 +183,8 @@ export namespace Live2DCubismFramework {
         return;
       }
 
-      for (let i = 0; i < modelSetting.getEyeBlinkParameterCount(); ++i) {
-        this._parameterIds.pushBack(modelSetting.getEyeBlinkParameterId(i));
+      for (let i = 0; i < modelSetting.getLipSyncParameterCount(); ++i) {
+        this._parameterIds.pushBack(modelSetting.getLipSyncParameterId(i));
       }
     }
 

@@ -1,3 +1,8 @@
+<!--
+ * @Author: XIE Yutai
+ * @LastEditors: XIE Yutai
+ * @Date: 2021-01-20 10:28:25
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,13 +28,15 @@
 </head>
 <body>
     1234567890
+    <audio id = "testaudio" src="../Demo//live2d/model/Haru/sounds/letitgo.mp3"></audio>
     <input id="getAction">
     <button onclick="getActionBtn()">获取</button>
     <button class="fui-eye">change</button>
+    <button class="action_change">action</button>
     <div class="live2d-main">
         <div class="live2d-tips"></div>
-        <!-- 这里可以定义画布的大小位置 -->
-        <canvas id="live2dCanvas" width="800" height="800" style="position: fixed; left: -300px; bottom:-100px" class="live2dCanvas"></canvas>
+        <!-- 这里可以定义画布的大小位置 <canvas id="live2dCanvas" width="800" height="800" style="position: fixed; left: -300px; bottom:-100px" class="live2dCanvas"></canvas>-->
+        <canvas id="live2dCanvas" width="800" height="800" style="position: fixed; " class="live2dCanvas"></canvas>
         <div class="tool">
             <span class="fui-home"></span>
             <span class="fui-chat"></span>

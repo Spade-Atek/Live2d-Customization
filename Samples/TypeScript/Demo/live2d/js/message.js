@@ -1,3 +1,8 @@
+/*
+ * @Author: XIE Yutai
+ * @LastEditors: XIE Yutai
+ * @Date: 2021-01-20 10:28:25
+ */
 // 初始化
 var state = 0;// 0 1 2
 function changeState(action){
@@ -67,4 +72,88 @@ function hideMessage(timeout){
 if(state == 0){
     onTeaching(state);
     console.log("执行");
+    getData();
+}
+
+
+
+
+// use XHR to load an audio track, and
+// decodeAudioData to decode it and stick it in a buffer.
+// Then we put the buffer into the source
+
+function getData() {
+    window.AudioContext = (window.AudioContext || window.webkitAudioContext);
+    if(window.AudioContext) {
+        var audioCtx = new window.AudioContext();
+        var source = audioCtx.createBufferSource();
+    } else {
+        console.log('not support web audio api');
+    }
+
+    var request = new XMLHttpRequest();
+
+    request.open('GET', 'http://127.0.0.1:5000/audio/getMp3/letitgo.mp3', true);
+    request.responseType = 'arraybuffer';
+    request.onload = function() {
+    var audioData = request.response;
+    console.log(audioData);
+    audioCtx.decodeAudioData(audioData, function(buffer) {
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.loop = true;
+        source.start(0);
+      },
+
+      function(e){"Error with decoding audio data" + e.err});
+
+  }
+
+  request.send();
+}
+
+function showAudio(){
+    
+    /**
+     * 
+     * window.AudioContext = (window.AudioContext || window.webkitAudioContext);
+    if(window.AudioContext) {
+        var context = new window.AudioContext();
+    } else {
+        console.log('not support web audio api');
+    }
+
+    var source = context.createBufferSource();
+
+    
+    var audioURl = "http://127.0.0.1:5000/audio/getMp3/letitgo.mp3";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',audioURl,true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(){
+        
+        context.decodeAudioData(request.response, function(buffer){
+            source = context.createBufferSource();
+            source.buffer = buffer;
+            source.connect(context.destination);
+            source.start(0);
+        })
+    }
+    xhr.send();
+
+    var audioCtx = new AudioContext();
+    var audio = document.getElementById("testaudio");
+    var source = audioCtx.createMediaElementSource(audio);
+    var audioAnalyser = audioCtx.createAnalyser();
+    audioAnalyser.fftSize =256;
+    var bufferLength = audioAnalyser.fftSize;
+    var dataArray = new Uint8Array(bufferLength);
+    audioAnalyser.getByteFrequencyData(dataArray);
+    console.log(dataArray);
+    source.connect(audioAnalyser);
+    audioAnalyser.connect(audioCtx.destination);
+    console.log("音乐播放1");
+    audio.play();
+
+     */
 }

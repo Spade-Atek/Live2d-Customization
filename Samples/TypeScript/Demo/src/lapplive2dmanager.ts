@@ -19,6 +19,8 @@ import * as LAppDefine from './lappdefine';
 
 export let s_instance: LAppLive2DManager = null; //实例化，调用lappmodel.ts的表情、动作方法，参数由LAppDefine.js传输
 let teaching_state :boolean = true;
+export let changeAtion : HTMLButtonElement = null;
+var actionNo = 0;
 /**
  * サンプルアプリケーションにおいてCubismModelを管理するクラス
  * モデル生成と破棄、タップイベントの処理、モデル切り替えを行う。
@@ -34,7 +36,14 @@ export class LAppLive2DManager {
     if (s_instance == null) {
       s_instance = new LAppLive2DManager();
     }
-
+    changeAtion = <HTMLButtonElement>document.getElementsByClassName("action_change")[0]
+    changeAtion.onmousedown = (): void =>{ //工具栏ation点击事件：增加1
+      actionNo ++;
+      if(actionNo == 26){
+        actionNo = 0;
+      }
+      console.log("actionNo: "+actionNo)
+    };
     return s_instance;
   }
 
@@ -114,7 +123,6 @@ export class LAppLive2DManager {
         //this._models.at(i).setRandomExpression(); 
         //this._models.at(i).setExpressionBySize(6);
         this._models.at(i).setExpression('f06');
-        this.onTeaching();
       } else if (this._models.at(i).hitTest(LAppDefine.HitAreaNameBody, x, y)) { //点击身体
         if (LAppDefine.DebugLogEnable) {
           LAppPal.printMessage(
@@ -134,13 +142,106 @@ export class LAppLive2DManager {
   public onTeaching() : void{
     if (teaching_state){
       console.log("当前处于教学动作");
-      for (let i = 0; i < this._models.getSize(); i++) {
+      for (let i = 0; i < this._models.getSize(); i++) {           
         //动作 mp3 表情
-        //this._models.at(i).startMotion(LAppDefine.MotionGroupTeaching,2,2,this._finishedMotion);
-        this._models.at(i).startMotion(LAppDefine.MotionGroupTeaching,4,2,this._finishedMotion);
+        //this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,actionNo,2,this._finishedMotion);
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,5,2,this._finishedMotion);
+        },1000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,6,2,this._finishedMotion);
+        },8000)
+
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,11,2,this._finishedMotion);
+        },13000)
+        /** 
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,0,2,this._finishedMotion);
+        },1000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,1,2,this._finishedMotion);
+        },8000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,2,2,this._finishedMotion);
+        },15000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,3,2,this._finishedMotion);
+        },20000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,4,2,this._finishedMotion);
+        },25000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,5,2,this._finishedMotion);
+        },30000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,6,2,this._finishedMotion);
+        },35000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,7,2,this._finishedMotion);
+        },40000)
+
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,16,2,this._finishedMotion);
+        },45000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,17,2,this._finishedMotion);
+        },50000)
+
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,18,2,this._finishedMotion);
+        },55000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,19,2,this._finishedMotion);
+        },60000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,20,2,this._finishedMotion);
+        },65000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,21,2,this._finishedMotion);
+        },70000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,22,2,this._finishedMotion);
+        },75000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,23,2,this._finishedMotion);
+        },80000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,24,2,this._finishedMotion);
+        },85000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,25,2,this._finishedMotion);
+        },90000)
+
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,8,2,this._finishedMotion);
+        },95000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,9,2,this._finishedMotion);
+        },100000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,10,2,this._finishedMotion);
+        },105000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,11,2,this._finishedMotion);
+        },110000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,12,2,this._finishedMotion);
+        },115000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,13,2,this._finishedMotion);
+        },120000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,14,2,this._finishedMotion);
+        },125000)
+        setTimeout(()=>{
+          this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,15,2,this._finishedMotion);
+        },130000)
+        */
         this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,1);
-        this._models.at(i).setExpressionBySize(6);
+        this._models.at(i).setExpressionBySize(5);
         //对动作的调用方法增加一个判断当前是否有动作才能继续执行
+        //
       }
     }else{
       console.log("当前不是教学动作");

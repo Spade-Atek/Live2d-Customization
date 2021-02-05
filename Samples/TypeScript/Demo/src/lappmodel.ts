@@ -47,7 +47,7 @@ import { gl, canvas, frameBuffer, LAppDelegate } from './lappdelegate';
 import { TextureInfo } from './lapptexturemanager';
 import * as LAppDefine from './lappdefine';
 import 'whatwg-fetch';
-
+let valueSound = 0;
 enum LoadStep {
   LoadAssets,
   LoadModel,
@@ -302,7 +302,7 @@ export class LAppModel extends CubismUserModel {
       }
     };
 
-    // EyeBlinkIds
+    // EyeBlinkIds 获取mouth id、数量
     const setupEyeBlinkIds = (): void => {
       const eyeBlinkIdCount: number = this._modelSetting.getEyeBlinkParameterCount();
 
@@ -313,7 +313,6 @@ export class LAppModel extends CubismUserModel {
       }
 
       this._state = LoadStep.SetupLipSyncIds;
-
       // callback
       setupLipSyncIds();
     };
@@ -460,10 +459,10 @@ export class LAppModel extends CubismUserModel {
     this._model.loadParameters(); // 前回セーブされた状態をロード 加载上次保存的状态 加载Idle动作
     if (this._motionManager.isFinished()) {
       // モーションの再生がない場合、待機モーションの中からランダムで再生する 在没有运动的再生的情况下，从待机运动中随机再生
-      this.startRandomMotion(
-        LAppDefine.MotionGroupIdle, // Idle
-        LAppDefine.PriorityIdle     // 1
-      );
+      //this.startRandomMotion(
+      //  LAppDefine.MotionGroupIdle, // Idle
+      //  LAppDefine.PriorityIdle     // 1
+      //);
     } else {
       motionUpdated = this._motionManager.updateMotion(
         this._model,
@@ -514,12 +513,13 @@ export class LAppModel extends CubismUserModel {
       this._physics.evaluate(this._model, deltaTimeSeconds);
     }
 
-    // リップシンクの設定
+    // リップシンクの設定 对口型设定
     if (this._lipsync) {
-      const value = 0; // リアルタイムでリップシンクを行う場合、システムから音量を取得して、0~1の範囲で値を入力します。
-
+      //const value = 0; // リアルタイムでリップシンクを行う場合、システムから音量を取得して、0~1の範囲で値を入力します。
+      //当你实时对口型时，你可以从系统获得音量，并输入0到1的值。 value: 1.0 是最高音量（默认）0.5 是一半音量 （50%） 0.0 是静音
+       
       for (let i = 0; i < this._lipSyncIds.getSize(); ++i) {
-        this._model.addParameterValueById(this._lipSyncIds.at(i), value, 0.8);
+        this._model.addParameterValueById(this._lipSyncIds.at(i), valueSound, 0.8);
       }
     }
 
@@ -589,7 +589,7 @@ export class LAppModel extends CubismUserModel {
         });
     } else {
       motion.setFinishedMotionHandler(onFinishedMotionHandler);
-      console.log("动作group: "+group+ ", group number: "+this._modelSetting.getMotionCount(group)+", 当前为:"+no)
+      console.log("动作group: "+group+ ", group number: "+this._modelSetting.getMotionCount(group)+", 当前为:"+(no+1))
     }
 
     if (this._debugMode) {
@@ -600,6 +600,24 @@ export class LAppModel extends CubismUserModel {
       autoDelete,
       priority
     );
+  }
+  
+  /**
+   * 
+   * @param group 
+   * @param priority 
+   * @param onFinishedMotionHandler 
+   */
+  public startMotionBySize(
+    group: string,
+    no: number,
+    priority: number,
+    onFinishedMotionHandler?: FinishedMotionCallback
+  ): CubismMotionQueueEntryHandle{
+    if(this._modelSetting.getMotionCount(group)==0){
+      return InvalidMotionQueueEntryHandleValue;
+    }
+    return this.startMotion(group,no,priority,onFinishedMotionHandler);
   }
 
   /**
@@ -641,12 +659,64 @@ export class LAppModel extends CubismUserModel {
   ): void{
     const motionSoundName = this._modelSetting.getMotionSoundFileName(group, no);
       if(motionSoundName != ""){
-        //var snd = document.createElement("audio");
-        let snd = new Audio()
+        let snd = document.createElement("audio");
+        //let snd = new Audio()
+        //var snd = <HTMLAudioElement>document.getElementById("testaudio");
         snd.src = this._modelHomeDir + motionSoundName
-        snd.play();
-        console.log("Start sound:"+snd.src);
+        //valueSound = snd.volume;
+        //console.log(valueSound);
+        
+        //valueSound = snd.volume;
+        snd.addEventListener('loadedata', () => {
+          let duration = snd.duration;
+          // duration 变量现在存放音频的播放时长（单位秒）
+          console.log("sound length:"+duration);
+          for(let i = 0; i<= duration;i+=0.1 ){
+            valueSound = snd.volume;
+            console.log(i+":"+valueSound);
+          }
+        })
+        console.log("Start sound:"+snd+valueSound);
         //注意播放视频的时间
+        window.AudioContext = window.AudioContext;
+        if (!AudioContext) alert('This site cannot be run in your Browser. Try a recent Chrome or Firefox. ');
+        var audioContext = new AudioContext();
+
+        let source = audioContext.createMediaElementSource(snd)
+        console.log(source);
+        //创建一个gain node 关于设置音量的
+        var gainNode = audioContext.createGain();
+        console.log(gainNode);
+        console.log(gainNode.gain.value);
+        
+        /**
+         * 创建oscillator 
+         * 
+        var os = audioContext.createOscillator();
+        source.connect(audioContext.destination);
+        console.log(os);
+        console.log(os.frequency);
+         */
+        
+         //analyser 
+        var audioAnalyser = audioContext.createAnalyser();
+        //source.connect(audioAnalyser);
+        //audioAnalyser.connect(audioContext.destination);
+        console.log(audioAnalyser);
+        audioAnalyser.fftSize = 256;
+        var bufferLength = audioAnalyser.fftSize;
+        //console.log("bufferLength"+bufferLength);
+        var dataArray = new Uint8Array(bufferLength);
+        audioAnalyser.getByteFrequencyData(dataArray);
+        source.connect(audioAnalyser);
+        audioAnalyser.connect(audioContext.destination);
+        snd.play();
+        for(var i = 0; i < bufferLength; i++) {
+          console.log(dataArray[i]);
+        }
+        const freqData = new Uint8Array(audioAnalyser.frequencyBinCount);
+        console.log(freqData);
+
       }
   }
   
