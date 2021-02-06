@@ -87,6 +87,7 @@ function getData() {
     if(window.AudioContext) {
         var audioCtx = new window.AudioContext();
         var source = audioCtx.createBufferSource();
+        var audioAnalyser = audioCtx.createAnalyser();
     } else {
         console.log('not support web audio api');
     }
@@ -100,17 +101,59 @@ function getData() {
     console.log(audioData);
     audioCtx.decodeAudioData(audioData, function(buffer) {
         source.buffer = buffer;
-        source.connect(audioCtx.destination);
+        audioAnalyser.fftSize = 32;
+        audioAnalyser.minDecibels = -90;
+        audioAnalyser.maxDecibels = -10;
+        audioAnalyser.smoothingTimeConstant = 0.85;
+        var bufferLength = audioAnalyser.fftSize;
+        var dataArray = new Uint8Array(bufferLength);
+        audioAnalyser.getByteFrequencyData(dataArray);
+        source.connect(audioAnalyser);
+        audioAnalyser.connect(audioCtx.destination);
         source.loop = true;
-        source.start(0);
-      },
+        //source.start(0);
+        
+        // 画出动态
+        var canvas = document.getElementById('audioCanvas'),
+        cwidth = document.body.clientWidth,
+        cheight = canvas.height,
+        meterWidth = 1, //width of the meters in the spectrum
+        gap = 0,
+            // capHeight = 2,
+            // capStyle = '#fff',
+            // meterNum = 1000 / (10 + 2), //count of the meters
+            // capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame
+        ctx = canvas.getContext('2d');
+        var _color = "#f99";
+        canvas.setAttribute('width', cwidth);
+        var drawMeter = function() {
+            var array = new Uint8Array(audioAnalyser.frequencyBinCount);
+            audioAnalyser.getByteFrequencyData(array);
 
+            // var step = Math.round(array.length / meterNum); //sample limited data from the total array
+            // console.log(step)
+            ctx.clearRect(0, 0, cwidth, cheight);
+            for (var i = 0; i < array.length; i++) {
+                var value = array[i];
+                //console.log(array[i]);
+                ctx.fillStyle = _color; //set the filllStyle to gradient for a better look
+                ctx.fillRect(i * meterWidth /*meterWidth+gap*/ , cheight - value, meterWidth, value); //the meter
+            }
+            requestAnimationFrame(drawMeter);
+        }
+        requestAnimationFrame(drawMeter);
+      },
       function(e){"Error with decoding audio data" + e.err});
 
   }
 
   request.send();
 }
+
+
+
+
+
 
 function showAudio(){
     

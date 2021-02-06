@@ -238,7 +238,13 @@ export class LAppLive2DManager {
           this._models.at(i).startMotionBySize(LAppDefine.MotionGroupTeaching,15,2,this._finishedMotion);
         },130000)
         */
-        this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,1);
+        this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,4);
+        setTimeout(()=>{
+          this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,0);
+        },4000)
+        setTimeout(()=>{
+          this._models.at(i).startSound(LAppDefine.MotionGroupTeaching,3);
+        },10000)
         this._models.at(i).setExpressionBySize(5);
         //对动作的调用方法增加一个判断当前是否有动作才能继续执行
         //

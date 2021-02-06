@@ -47,7 +47,7 @@ import { gl, canvas, frameBuffer, LAppDelegate } from './lappdelegate';
 import { TextureInfo } from './lapptexturemanager';
 import * as LAppDefine from './lappdefine';
 import 'whatwg-fetch';
-let valueSound = 0;
+var valueSound = 0;
 enum LoadStep {
   LoadAssets,
   LoadModel,
@@ -688,22 +688,13 @@ export class LAppModel extends CubismUserModel {
         var gainNode = audioContext.createGain();
         console.log(gainNode);
         console.log(gainNode.gain.value);
-        
-        /**
-         * 创建oscillator 
-         * 
-        var os = audioContext.createOscillator();
-        source.connect(audioContext.destination);
-        console.log(os);
-        console.log(os.frequency);
-         */
-        
+
          //analyser 
         var audioAnalyser = audioContext.createAnalyser();
         //source.connect(audioAnalyser);
         //audioAnalyser.connect(audioContext.destination);
         console.log(audioAnalyser);
-        audioAnalyser.fftSize = 256;
+        audioAnalyser.fftSize = 32;
         var bufferLength = audioAnalyser.fftSize;
         //console.log("bufferLength"+bufferLength);
         var dataArray = new Uint8Array(bufferLength);
@@ -711,15 +702,48 @@ export class LAppModel extends CubismUserModel {
         source.connect(audioAnalyser);
         audioAnalyser.connect(audioContext.destination);
         snd.play();
+        /** 
         for(var i = 0; i < bufferLength; i++) {
           console.log(dataArray[i]);
         }
         const freqData = new Uint8Array(audioAnalyser.frequencyBinCount);
         console.log(freqData);
+        */
+        // 画出动态
+        var canvas = <HTMLCanvasElement>document.getElementById('audioCanvas'),
+        cwidth = document.body.clientWidth,
+        cheight = canvas.height,
+        meterWidth = 10, //width of the meters in the spectrum
+        gap = 0,
+            // capHeight = 2,
+            // capStyle = '#fff',
+            // meterNum = 1000 / (10 + 2), //count of the meters
+            // capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame
+        ctx = canvas.getContext('2d');
+        var _color = "#f99";
+        //canvas.setAttribute('width', cwidth);
+        var drawMeter = function() {
+            var array = new Uint8Array(audioAnalyser.frequencyBinCount);
+            audioAnalyser.getByteFrequencyData(array);
+            // var step = Math.round(array.length / meterNum); //sample limited data from the total array
+            // console.log(step)
+            ctx.clearRect(0, 0, cwidth, cheight);
+            for (var i = 0; i < array.length; i+=2) {
+                var value = array[i];
+                valueSound = array[3]/200;
+                //对于背景音乐与人声的区别
+                //对其进行口型等级划分，使其变得更加明显
+                //关于口型变化太快的问题，改变for循环的方式，每两个获取一个/每三个（数据多，变化快的原因）
+                //注意各个时间点 播放完valueSound变为0
+                ctx.fillStyle = _color; //set the filllStyle to gradient for a better look
+                ctx.fillRect(i * meterWidth /*meterWidth+gap*/ , cheight - value, meterWidth, value); //the meter
+            }
+            requestAnimationFrame(drawMeter);
+        }
+        requestAnimationFrame(drawMeter);
 
       }
   }
-  
 
   /**
    * 引数で指定した表情モーションをセットする 设置用参数指定的表情动作
