@@ -47,7 +47,7 @@ import { gl, canvas, frameBuffer, LAppDelegate } from './lappdelegate';
 import { TextureInfo } from './lapptexturemanager';
 import * as LAppDefine from './lappdefine';
 import 'whatwg-fetch';
-var valueSound = 0;
+var soundValue = 0;
 enum LoadStep {
   LoadAssets,
   LoadModel,
@@ -519,7 +519,7 @@ export class LAppModel extends CubismUserModel {
       //当你实时对口型时，你可以从系统获得音量，并输入0到1的值。 value: 1.0 是最高音量（默认）0.5 是一半音量 （50%） 0.0 是静音
        
       for (let i = 0; i < this._lipSyncIds.getSize(); ++i) {
-        this._model.addParameterValueById(this._lipSyncIds.at(i), valueSound, 0.8);
+        this._model.addParameterValueById(this._lipSyncIds.at(i), soundValue, 0.8);
       }
     }
 
@@ -663,78 +663,41 @@ export class LAppModel extends CubismUserModel {
         //let snd = new Audio()
         //var snd = <HTMLAudioElement>document.getElementById("testaudio");
         snd.src = this._modelHomeDir + motionSoundName
-        //valueSound = snd.volume;
-        //console.log(valueSound);
-        
-        //valueSound = snd.volume;
-        snd.addEventListener('loadedata', () => {
-          let duration = snd.duration;
-          // duration 变量现在存放音频的播放时长（单位秒）
-          console.log("sound length:"+duration);
-          for(let i = 0; i<= duration;i+=0.1 ){
-            valueSound = snd.volume;
-            console.log(i+":"+valueSound);
-          }
-        })
-        console.log("Start sound:"+snd+valueSound);
-        //注意播放视频的时间
+
         window.AudioContext = window.AudioContext;
         if (!AudioContext) alert('This site cannot be run in your Browser. Try a recent Chrome or Firefox. ');
         var audioContext = new AudioContext();
-
         let source = audioContext.createMediaElementSource(snd)
-        console.log(source);
-        //创建一个gain node 关于设置音量的
-        var gainNode = audioContext.createGain();
-        console.log(gainNode);
-        console.log(gainNode.gain.value);
-
-         //analyser 
+        //gain node 关于设置音量的 console.log(gainNode.gain.value);
+        //var gainNode = audioContext.createGain();
+        //analyser 
         var audioAnalyser = audioContext.createAnalyser();
-        //source.connect(audioAnalyser);
-        //audioAnalyser.connect(audioContext.destination);
-        console.log(audioAnalyser);
         audioAnalyser.fftSize = 32;
         var bufferLength = audioAnalyser.fftSize;
-        //console.log("bufferLength"+bufferLength);
         var dataArray = new Uint8Array(bufferLength);
         audioAnalyser.getByteFrequencyData(dataArray);
         source.connect(audioAnalyser);
         audioAnalyser.connect(audioContext.destination);
         snd.play();
-        /** 
-        for(var i = 0; i < bufferLength; i++) {
-          console.log(dataArray[i]);
-        }
-        const freqData = new Uint8Array(audioAnalyser.frequencyBinCount);
-        console.log(freqData);
-        */
+        //对于背景音乐与人声的区别
+        //对其进行口型等级划分，使其变得更加明显
+        //关于口型变化太快的问题，改变for循环的方式，每两个获取一个/每三个（数据多，变化快的原因）
+        //注意各个时间点 播放完valueSound变为0
+        //完善声音获取方式，除了基本的打招呼、再见存在本地，其他的语言通过服务器获取
         // 画出动态
         var canvas = <HTMLCanvasElement>document.getElementById('audioCanvas'),
         cwidth = document.body.clientWidth,
         cheight = canvas.height,
         meterWidth = 10, //width of the meters in the spectrum
-        gap = 0,
-            // capHeight = 2,
-            // capStyle = '#fff',
-            // meterNum = 1000 / (10 + 2), //count of the meters
-            // capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame
         ctx = canvas.getContext('2d');
-        var _color = "#f99";
-        //canvas.setAttribute('width', cwidth);
+        var _color = "##6950a1";
         var drawMeter = function() {
             var array = new Uint8Array(audioAnalyser.frequencyBinCount);
             audioAnalyser.getByteFrequencyData(array);
-            // var step = Math.round(array.length / meterNum); //sample limited data from the total array
-            // console.log(step)
             ctx.clearRect(0, 0, cwidth, cheight);
             for (var i = 0; i < array.length; i+=2) {
                 var value = array[i];
-                valueSound = array[3]/200;
-                //对于背景音乐与人声的区别
-                //对其进行口型等级划分，使其变得更加明显
-                //关于口型变化太快的问题，改变for循环的方式，每两个获取一个/每三个（数据多，变化快的原因）
-                //注意各个时间点 播放完valueSound变为0
+                soundValue = array[3]/200;
                 ctx.fillStyle = _color; //set the filllStyle to gradient for a better look
                 ctx.fillRect(i * meterWidth /*meterWidth+gap*/ , cheight - value, meterWidth, value); //the meter
             }
@@ -745,6 +708,12 @@ export class LAppModel extends CubismUserModel {
       }
   }
 
+  /**
+   * 方便lappmodel调用 
+   */
+  public getSoundValue() :number{
+    return soundValue
+  }
   /**
    * 引数で指定した表情モーションをセットする 设置用参数指定的表情动作
    *
